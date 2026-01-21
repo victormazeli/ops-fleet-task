@@ -14,7 +14,7 @@ kubernetes_version = "1.32"
 # -----------------------------
 karpenter_version          = "1.8.4"
 karpenter_replicas         = 2
-enable_karpenter_manifests = true
+enable_karpenter_manifests = false // This is set to false, to prevent Terraform from running the k8s manifest. Set this to true once the kubeconfig has been configured on the host machine 
 
 # -----------------------------
 # Networking
