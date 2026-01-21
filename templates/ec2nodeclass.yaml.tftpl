@@ -1,0 +1,19 @@
+apiVersion: karpenter.k8s.aws/v1
+kind: EC2NodeClass
+metadata:
+  name: default
+spec:
+  amiSelectorTerms:
+    - alias: ${ami_alias}
+  role: ${node_role_name}
+
+  subnetSelectorTerms:
+    - tags:
+        ${discovery_tag_key}: ${discovery_tag_value}
+
+  securityGroupSelectorTerms:
+    - tags:
+        ${discovery_tag_key}: ${discovery_tag_value}
+
+  tags:
+    ${discovery_tag_key}: ${discovery_tag_value}

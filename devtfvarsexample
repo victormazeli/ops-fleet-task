@@ -1,0 +1,46 @@
+# -----------------------------
+# Global
+# -----------------------------
+region = "us-east-1"
+name   = "eks-karpenter-demo"
+
+# -----------------------------
+# Kubernetes
+# -----------------------------
+kubernetes_version = "1.32"
+
+# -----------------------------
+# Karpenter
+# -----------------------------
+karpenter_version          = "1.8.4"
+karpenter_replicas         = 2
+enable_karpenter_manifests = true
+
+# -----------------------------
+# Networking
+# -----------------------------
+vpc_cidr           = "10.0.0.0/16"
+single_nat_gateway = true
+enable_nat_gateway = true
+
+# -----------------------------
+# Security
+# -----------------------------
+endpoint_public_access                   = true
+endpoint_public_access_cidrs             = ["0.0.0.0/0"] # Add IP CIDRs for production
+enable_cluster_creator_admin_permissions = true
+
+# -----------------------------
+# Node Pools
+# -----------------------------
+node_pool_cpu_limit                  = "200"
+node_pool_consolidation_budget_nodes = "10%"
+
+# -----------------------------
+# Tags
+# -----------------------------
+tags = {
+  Environment = "dev"
+  Owner       = "platform"
+  ManagedBy   = "terraform"
+}
