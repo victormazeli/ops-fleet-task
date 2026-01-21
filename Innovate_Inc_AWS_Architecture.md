@@ -124,12 +124,103 @@ Client → ALB (TLS, WAF) → Kong Ingress → Services
 
 ---
 
-## 10. Database Architecture
+## 10. Database Architecture (PostgreSQL)
 
 - Amazon Aurora (PostgreSQL-compatible)
 - Multi-AZ
 - Automated backups
 - Multi-region disaster recovery
+
+Innovate Inc.’s application requires a relational database that is secure, highly available, easy to operate, and capable of supporting future growth. To meet these requirements, the platform uses **Amazon Aurora (PostgreSQL-compatible)** with **Aurora Global Database** for disaster recovery.
+
+---
+
+### 10.1 Why Amazon Aurora
+
+Amazon Aurora is a fully managed relational database service that is compatible with PostgreSQL while providing enhanced reliability and operational simplicity.
+
+Aurora is selected because it:
+- Eliminates the need to manage database servers manually
+- Provides built-in high availability across multiple Availability Zones
+- Automates backups and recovery
+- Integrates natively with AWS networking, security, and monitoring services
+- Supports global replication for disaster recovery scenarios
+
+This allows the engineering team to focus on application development rather than database operations.
+
+---
+
+### 10.2 High Availability (Single Region)
+
+High availability ensures the database remains operational even if individual components fail.
+
+Within a single AWS region, Aurora provides **automatic high availability** by:
+- Replicating data across **multiple Availability Zones**
+- Maintaining multiple copies of data in a distributed storage layer
+- Automatically detecting failures and promoting healthy replicas
+
+If the primary database instance becomes unavailable:
+- Aurora automatically performs a failover
+- A replica is promoted to primary
+- Applications reconnect using the same database endpoint
+
+This process is fully managed by AWS and requires no manual intervention.
+
+---
+
+### 10.3 Automated Backups and Recovery
+
+Aurora provides **continuous, automated backups** with minimal performance impact.
+
+Key characteristics:
+- Backups are incremental and stored securely in Amazon S3
+- Point-in-time recovery is supported within the configured retention period
+- Manual snapshots can be taken before major releases or schema changes
+
+This enables fast recovery from:
+- Accidental data deletion
+- Application bugs
+- Data corruption events
+
+Backup management is handled entirely by AWS, reducing operational complexity and risk.
+
+---
+
+### 10.4 Disaster Recovery (Multi-Region with Aurora Global Database)
+
+To protect against **regional-level outages**, Innovate Inc. uses **Aurora Global Database**.
+
+Aurora Global Database enables:
+- Continuous replication of data from the primary region to a secondary AWS region
+- Low-latency cross-region replication
+- A standby database that is ready to be promoted during a disaster
+
+#### Failover Behavior
+
+- **Within a single region:**  
+  Failover across Availability Zones is **fully automatic**.
+
+- **Across regions:**  
+  Failover is **intentionally controlled**, not automatic.
+
+In the event of a regional outage:
+1. Route 53 health checks redirect application traffic to the secondary region.
+2. The Aurora Global Database secondary cluster is **explicitly promoted** to become the primary writer.
+3. Applications in the DR region connect to the promoted database.
+
+The promotion can be: 
+- Automated via approved workflows (for example, alarms triggering controlled automation)
+
+This design prevents accidental failovers and protects data integrity while still enabling rapid recovery.
+
+---
+
+### 10.5 Security and Access Control
+
+- Aurora runs entirely in **private subnets**
+- The database is not publicly accessible
+- Access is restricted to application services via security groups
+- Data is encrypted at rest and in transit using AWS-managed encryption
 
 ---
 

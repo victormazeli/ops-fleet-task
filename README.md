@@ -126,6 +126,14 @@ Do **not** run a full destroy while NodePools still exist.
 
 ---
 
+## Karpenter PodDisruptionBudget (PDB)
+
+- Ensures at least **one Karpenter controller** stays available during voluntary disruptions (e.g. node drains, upgrades).
+- Reduces the risk of **scheduling stalls** caused by all Karpenter pods being evicted at once.
+- Added as a **small safety net** for cluster stability; no changes are required in normal day‑to‑day use.
+
+---
+
 ## Project structure
 
 ```
