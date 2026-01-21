@@ -51,6 +51,10 @@ Baseline Node Group (On‑Demand, fixed)
 
 ## Quick start
 
+Note: set 
+``` bash 
+enable_karpenter_manifests=false // at first run in dev.tfvars
+```
 ```bash
 terraform init
 terraform apply -var-file=dev.tfvars
@@ -69,6 +73,15 @@ kubectl get nodes
 kubectl get nodepools
 kubectl get ec2nodeclass
 ```
+
+Run with nodepool manifests after intitial run:
+set 
+
+```bash
+enable_karpenter_manifests=true
+terraform apply -var-file=dev.tfvars
+```
+
 
 ---
 
